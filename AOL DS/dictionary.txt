@@ -2,3 +2,11 @@ Buku Book
 Air Water
 Pagi Morning
 Malam Night
+Pergi Go
+Makan Eat
+Minum Drink
+Tidur Sleep
+Berlari Run
+Berjalan Walk
+Berbicara Talk
+Mendengarkan Listen

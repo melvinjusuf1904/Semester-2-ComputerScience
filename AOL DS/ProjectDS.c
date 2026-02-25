@@ -9,7 +9,7 @@
 #define FILE_NAME "/Users/melvinjusuf/Documents/AOL DS/dictionary.txt"
 
 /* =====================================================
-   1️⃣ ARRAY & POINTER  (MAIN STORAGE)
+   1️⃣ ARRAY & POINTER (MAIN STORAGE)
 ===================================================== */
 
 typedef struct {
@@ -21,32 +21,45 @@ Dictionary dictArray[MAX];
 int count = 0;
 
 /* =====================================================
-   2️⃣ LINKED LIST (Dynamic Backup Storage)
+   2️⃣ DOUBLY CIRCULAR LINKED LIST
 ===================================================== */
 
 typedef struct Node {
     Dictionary data;
     struct Node* next;
+    struct Node* prev;
 } Node;
 
 Node* head = NULL;
 
-void insertLinkedList(Dictionary d) {
+void insertDCLL(Dictionary d) {
     Node* newNode = (Node*)malloc(sizeof(Node));
     newNode->data = d;
-    newNode->next = head;
-    head = newNode;
+
+    if(head == NULL) {
+        head = newNode;
+        newNode->next = newNode;
+        newNode->prev = newNode;
+    } else {
+        Node* tail = head->prev;
+
+        tail->next = newNode;
+        newNode->prev = tail;
+
+        newNode->next = head;
+        head->prev = newNode;
+    }
 }
 
 /* =====================================================
-   3️⃣ STACK (UNDO SYSTEM)
+   3️⃣ STACK (UNDO)
 ===================================================== */
 
 Dictionary stack[STACK_SIZE];
 int top = -1;
 
 void push(Dictionary d) {
-    if(top < STACK_SIZE - 1)
+    if(top < STACK_SIZE-1)
         stack[++top] = d;
 }
 
@@ -62,7 +75,7 @@ Dictionary queue[QSIZE];
 int front = 0, rear = -1;
 
 void enqueue(Dictionary d) {
-    if(rear < QSIZE - 1)
+    if(rear < QSIZE-1)
         queue[++rear] = d;
 }
 
@@ -73,7 +86,7 @@ void showHistory() {
 }
 
 /* =====================================================
-   5️⃣ BINARY SEARCH TREE (SORTED STRUCTURE)
+   5️⃣ BINARY SEARCH TREE (SORTED)
 ===================================================== */
 
 typedef struct TreeNode {
@@ -84,7 +97,7 @@ typedef struct TreeNode {
 
 TreeNode* root = NULL;
 
-TreeNode* insertTree(TreeNode* node, Dictionary d) {
+TreeNode* insertBST(TreeNode* node, Dictionary d) {
     if(node == NULL) {
         TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
         newNode->data = d;
@@ -93,9 +106,9 @@ TreeNode* insertTree(TreeNode* node, Dictionary d) {
     }
 
     if(strcmp(d.indo, node->data.indo) < 0)
-        node->left = insertTree(node->left, d);
+        node->left = insertBST(node->left, d);
     else
-        node->right = insertTree(node->right, d);
+        node->right = insertBST(node->right, d);
 
     return node;
 }
@@ -148,7 +161,7 @@ HashNode* searchHash(char key[]) {
 }
 
 /* =====================================================
-   📂 FILE PROCESSING
+   FILE PROCESSING
 ===================================================== */
 
 void saveToFile() {
@@ -171,9 +184,9 @@ void loadFromFile() {
 
     while(fscanf(fp, "%s %s", d.indo, d.eng) != EOF) {
         dictArray[count++] = d;
-        insertLinkedList(d);
+        insertDCLL(d);
         insertHash(d);
-        root = insertTree(root, d);
+        root = insertBST(root, d);
     }
 
     fclose(fp);
@@ -193,13 +206,13 @@ void addWord() {
 
     dictArray[count++] = d;
 
-    insertLinkedList(d);
+    insertDCLL(d);
     insertHash(d);
-    root = insertTree(root, d);
+    root = insertBST(root, d);
 
     saveToFile();
 
-    printf("Word added & saved.\n");
+    printf("Word added.\n");
 }
 
 void searchWord() {
@@ -228,8 +241,7 @@ void updateWord() {
     HashNode* result = searchHash(key);
 
     if(result != NULL) {
-
-        push(result->data);  // Save old value
+        push(result->data);
 
         printf("New meaning: ");
         scanf("%s", result->data.eng);
@@ -239,7 +251,7 @@ void updateWord() {
                 strcpy(dictArray[i].eng, result->data.eng);
 
         saveToFile();
-        printf("Updated & saved.\n");
+        printf("Updated.\n");
     }
 }
 
@@ -258,8 +270,7 @@ void deleteWord() {
 
             count--;
             saveToFile();
-
-            printf("Deleted & saved.\n");
+            printf("Deleted.\n");
             return;
         }
     }
@@ -271,8 +282,9 @@ void undo() {
     if(top >= 0) {
         Dictionary d = pop();
         dictArray[count++] = d;
+        insertDCLL(d);
         insertHash(d);
-        root = insertTree(root, d);
+        root = insertBST(root, d);
         saveToFile();
         printf("Undo success.\n");
     }
@@ -283,7 +295,7 @@ void undo() {
 ===================================================== */
 
 void menu() {
-    printf("\n===== DICTIONARY MENU =====\n");
+    printf("\n===== FINAL DICTIONARY SYSTEM =====\n");
     printf("1. Add Word\n");
     printf("2. Search Word\n");
     printf("3. Update Word\n");
@@ -307,28 +319,20 @@ int main() {
         scanf("%d", &choice);
 
         switch(choice) {
-            case 1: addWord(); 
-                break;
-            case 2: searchWord(); 
-                break;
-            case 3: updateWord(); 
-                break;
-            case 4: deleteWord(); 
-                break;
+            case 1: addWord(); break;
+            case 2: searchWord(); break;
+            case 3: updateWord(); break;
+            case 4: deleteWord(); break;
             case 5:
                 for(int i = 0; i < count; i++)
                     printf("%s -> %s\n",
                            dictArray[i].indo,
                            dictArray[i].eng);
                 break;
-            case 6: inorder(root); 
-                break;
-            case 7: showHistory(); 
-                break;
-            case 8: undo(); 
-                break;
-            case 9: printf("Exit.\n"); 
-                break;
+            case 6: inorder(root); break;
+            case 7: showHistory(); break;
+            case 8: undo(); break;
+            case 9: printf("Exit.\n"); break;
             default: printf("Invalid.\n");
         }
 
