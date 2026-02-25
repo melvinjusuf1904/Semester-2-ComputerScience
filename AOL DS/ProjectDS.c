@@ -8,10 +8,6 @@
 #define TABLE_SIZE 101
 #define FILE_NAME "/Users/melvinjusuf/Documents/AOL DS/dictionary.txt"
 
-/* =====================================================
-   1️⃣ ARRAY & POINTER (MAIN STORAGE)
-===================================================== */
-
 typedef struct {
     char indo[50];
     char eng[50];
@@ -19,10 +15,6 @@ typedef struct {
 
 Dictionary dictArray[MAX];
 int count = 0;
-
-/* =====================================================
-   2️⃣ DOUBLY CIRCULAR LINKED LIST
-===================================================== */
 
 typedef struct Node {
     Dictionary data;
@@ -51,10 +43,6 @@ void insertDCLL(Dictionary d) {
     }
 }
 
-/* =====================================================
-   3️⃣ STACK (UNDO)
-===================================================== */
-
 Dictionary stack[STACK_SIZE];
 int top = -1;
 
@@ -66,10 +54,6 @@ void push(Dictionary d) {
 Dictionary pop() {
     return stack[top--];
 }
-
-/* =====================================================
-   4️⃣ QUEUE (SEARCH HISTORY)
-===================================================== */
 
 Dictionary queue[QSIZE];
 int front = 0, rear = -1;
@@ -84,10 +68,6 @@ void showHistory() {
     for(int i = front; i <= rear; i++)
         printf("%s -> %s\n", queue[i].indo, queue[i].eng);
 }
-
-/* =====================================================
-   5️⃣ BINARY SEARCH TREE (SORTED)
-===================================================== */
 
 typedef struct TreeNode {
     Dictionary data;
@@ -120,10 +100,6 @@ void inorder(TreeNode* node) {
         inorder(node->right);
     }
 }
-
-/* =====================================================
-   6️⃣ HASH TABLE (FAST SEARCH)
-===================================================== */
 
 typedef struct HashNode {
     Dictionary data;
@@ -160,10 +136,6 @@ HashNode* searchHash(char key[]) {
     return NULL;
 }
 
-/* =====================================================
-   FILE PROCESSING
-===================================================== */
-
 void saveToFile() {
     FILE *fp = fopen(FILE_NAME, "w");
     if(fp == NULL) return;
@@ -191,10 +163,6 @@ void loadFromFile() {
 
     fclose(fp);
 }
-
-/* =====================================================
-   CRUD OPERATIONS
-===================================================== */
 
 void addWord() {
     Dictionary d;
@@ -289,10 +257,6 @@ void undo() {
         printf("Undo success.\n");
     }
 }
-
-/* =====================================================
-   MENU
-===================================================== */
 
 void menu() {
     printf("\n===== FINAL DICTIONARY SYSTEM =====\n");
