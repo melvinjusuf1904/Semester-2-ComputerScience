@@ -1,36 +1,234 @@
-Menerima Accept
-Menasihati Advise
-Menjawab Answer
-Menyerang Attact
-Memanggang Bake
-Percaya Believe
-Membawa Bring
-Membeli Buy
-Mengubah Change
-Menutup Close
-Mempertimbangkan Consider
-Menyalin Copy
-Mengantar Deliver
-Menghancurkan Destroy
-Melakukan Do
-Menambahkan Add
-Setuju Agree
-Berdebat Argue
-Menghindari Avoid
-Mandi Bath
-Memulai Begin
-Membangun Build
-Membatalkan Cancel
-Membersihkan Clean
-Membingungkan Confuse
-Melanjutkan Continue
-Memutuskan Decide
-Berdiskusi Discuss
-Mengemudi Drive
-Memeriksa Examine
-Mendorong Encourage
-Menjelaskan Explain
-Memaafkan Forgive
-Memberi Give
-Membantu Help
-Bergegas Hurry
+List of 300+ words Indonesian-English Dictionary
+
+A
+Adaptasi — Adaptation
+Adil — Justifiable
+Agresif — Aggressive
+Ahli — Specialist
+Akurat — Accurate
+Alasan — Reason
+Ambisi — Ambition
+Ancaman — Threat
+Apresiasi — Appreciation
+Asumsi — Assumption
+Atmosfer — Atmosphere
+
+B
+Bangkrut — Bankrupt
+Batas — Boundary
+Beban — Burden
+Berani — Bold
+Berdampak — Impactful
+Berkembang — Flourish
+Berlebihan — Excessive
+Bernapas — Breathe
+Bersedia — Willing
+Bijaksana — Wise
+Bimbang — Hesitant
+
+C
+Cacat — Defective
+Campur tangan — Intervention
+Canggih — Sophisticated
+Canggung — Awkward
+Capaian — Achievement
+Cemas — Anxious
+Cepat — Rapid
+Cerdas — Intelligent
+Cermat — Meticulous
+Citra — Image
+Curiga — Suspicious
+Curam — Steep
+
+D
+Damai — Peace
+Dampak — Impact
+Dangkal — Superficial
+Darurat — Urgent, Emergency
+Dedikasi — Dedication
+Dermawan — Generous
+Dominan — Dominant
+Deduksi — Deduction
+Defensif — Defensive
+Depresi — Depression
+Desakan — Pressure
+
+E
+Efektif — Effective
+Efisien — Efficient
+Ego — Ego
+Egois — Selfish
+Ekspansi — Expansion
+Elegan — Elegant
+Emosional — Emotional
+Empati — Empathy
+Energi — Energy
+Erat — Intimate
+Etika — Ethics
+Evaluasi — Evaluation
+
+F
+Fasih — Fluent
+Fenomena — Phenomenon
+Fenomenal — Phenomenal
+Figuratif — Figurative
+Fleksibel — Flexible
+Fokus — Focus, Concentrate
+Formalitas — Formality
+Frekuensi — Frequency
+Frustrasi — Frustration
+Fungsi — Function
+
+G
+Gagal — Fail
+Gagasan — Notion
+Gairah — Passion
+Generasi — Generation
+Gesit — Agile
+Guncangan — Shock
+
+H
+Hambatan — Obstacle
+Harga diri — Dignity
+Harmonisasi — Harmonization
+Hasil — Outcome
+Hebat — Remarkable
+Hemat — Economical
+Hierarki — Hierarchy
+Hiperbola — Exaggeration
+Hubungan — Relationship
+Humoris — Humorous
+Huru-hara — Chaos
+
+I
+Idealis — Idealistic
+Identitas — Identity
+Ilusi — Illusion
+Imajinasi — Imagination
+Implementasi — Implementation
+Independen — Independent
+Inspirasi — Inspiration
+Intens — Intense
+
+J
+Jaminan — assurance
+jangka panjang — long-term
+janggal — awkward, odd
+jenius — genius
+jernih — clear
+jorok — filthy
+justifikasi — justification
+jujur — honest
+jurang — abyss
+
+K
+kacau — chaotic
+kapasitas — capacity
+karakter — character
+kebebasan — liberty
+keberanian — courage
+kebijakan — policy
+kecerdasan — intelligence
+kecuali — except
+kejam — cruel
+kemajuan — progress
+kemungkinan — possibility
+
+L
+layak — worthy
+legal — legitimate
+lemah — fragile
+logis — logical
+loyal — loyal
+luas — vast
+
+M
+makna — meaning
+matang — mature
+mewah — luxurious
+misterius — mysterious
+moderat — moderate
+motivasi — motivation
+muak — disgusted
+
+N
+naif — naive
+negatif — negative
+netral — neutral
+nyata — tangible
+
+O
+objektif — objective
+optimis — optimistic
+orisinal — original
+
+P
+pandangan — perspective
+paradoks — paradox
+patuh — obedient
+pembenaran — justification
+pemulihan — recovery
+pengetahuan — knowledge
+penolakan — rejection
+persepsi — perception
+pertimbangan — consideration
+potensial — potential
+puas — satisfied
+
+Q
+
+
+R
+rasional — rational
+realistis — realistic
+reformasi — reform
+relevan — relevant
+rentan — vulnerable
+reputasi — reputation
+responsif — responsive
+rumit — complicated
+
+S
+sabar — patient
+sadar — aware
+sarkastik — sarcastic
+sederhana — simple
+signifikan — significant
+sinis — cynical
+solusi — solution
+spesifik — specific
+spontan — spontaneous
+stabil — stable
+strategi — strategy
+stres — stress
+struktural — structural
+subjektif — subjective
+sukses — success
+
+T
+taktis — tactical
+tangguh — resilient
+transparan — transparent
+tren — trend
+
+U
+unik — unique
+universal — universal
+urgensi — urgency
+
+V
+valid — valid
+variasi — variation
+virtual — virtual
+visi — vision
+vital — vital
+
+W
+waspada — cautious
+wibawa — authority
+
+X
+
+Y
+
+Z
