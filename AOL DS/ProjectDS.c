@@ -79,11 +79,19 @@ void inorder(TreeNode* node) {
 /* ================= MENU ================= */
 
 void menu() {
-    printf("\n===== FINAL DICTIONARY SYSTEM =====\n");
-    printf("1. Add Word\n");
-    printf("2. Display All (Array)\n");
-    printf("3. Display Sorted (BST)\n");
-    printf("4. Exit\n");
+    printf("  ╔════════════════════════════════╗\n");
+    printf("\n === FINAL DICTIONARY SYSTEM ===\n");
+    printf("  ╠════════════════════════════════╣\n");
+    printf("  ║  1. Add Word                   ║\n");
+    printf("  ║  2. Delete Word                ║\n"
+    printf("  ║  3. Change Translate Words     ║\n");
+    printf("  ║  4. Search Word                ║\n");
+    printf("  ║  5. Display All (Array)        ║\n");
+    printf("  ║  6. Display Sorted (BST)       ║\n");
+    printf("  ║  7. Undo Last Operation        ║\n");
+    printf("  ║  8. Word Search History        ║\n");
+    printf("  ║  0. Save & Exit                ║\n");
+    printf("  ╚════════════════════════════════╝\n");
     printf("Choose: ");
 }
 
