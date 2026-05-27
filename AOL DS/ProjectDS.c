@@ -3,18 +3,18 @@
 #include <string.h>
 
 #define MAX 300
-#define STACK_SIZE 100
-#define QSIZE 100
-#define TABLE_SIZE 101
-#define FILE_NAME "/Users/melvinjusuf/Documents/AOL DS/dictionary.txt"
 
 typedef struct {
-    char indo[50];
-    char eng[50];
+    char indo[100];
+    char eng[100];
 } Dictionary;
+
+/* ================= ARRAY ================= */
 
 Dictionary dictArray[MAX];
 int count = 0;
+
+/* ================= DCLL ================= */
 
 typedef struct Node {
     Dictionary data;
@@ -41,4 +41,95 @@ void insertDCLL(Dictionary d) {
         newNode->next = head;
         head->prev = newNode;
     }
+}
+
+/* ================= BST ================= */
+
+typedef struct TreeNode {
+    Dictionary data;
+    struct TreeNode* left;
+    struct TreeNode* right;
+} TreeNode;
+
+TreeNode* root = NULL;
+
+TreeNode* insertBST(TreeNode* node, Dictionary d) {
+    if(node == NULL) {
+        TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
+        newNode->data = d;
+        newNode->left = newNode->right = NULL;
+        return newNode;
+    }
+
+    if(strcmp(d.indo, node->data.indo) < 0)
+        node->left = insertBST(node->left, d);
+    else
+        node->right = insertBST(node->right, d);
+    return node;
+}
+
+void inorder(TreeNode* node) {
+    if(node != NULL) {
+        inorder(node->left);
+        printf("%s -> %s\n", node->data.indo, node->data.eng);
+        inorder(node->right);
+    }
+}
+
+/* ================= MENU ================= */
+
+void menu() {
+    printf("\n===== FINAL DICTIONARY SYSTEM =====\n");
+    printf("1. Add Word\n");
+    printf("2. Display All (Array)\n");
+    printf("3. Display Sorted (BST)\n");
+    printf("4. Exit\n");
+    printf("Choose: ");
+}
+
+/* ================= MAIN ================= */
+
+int main() {
+    int choice;
+    Dictionary d;
+
+    do {
+        menu();
+        scanf("%d", &choice);
+
+        switch(choice) {
+
+            case 1:
+                printf("Indonesia: ");
+                scanf("%s", d.indo);
+
+                printf("English: ");
+                scanf("%s", d.eng);
+
+                dictArray[count++] = d;
+
+                insertDCLL(d);
+
+                root = insertBST(root, d);
+
+                printf("Word added.\n");
+                break;
+            case 2:
+                for(int i = 0; i < count; i++) {
+                    printf("%s -> %s\n",
+                           dictArray[i].indo,
+                           dictArray[i].eng);
+                }
+                break;
+            case 3:
+                inorder(root);
+                break;
+            case 4:
+                printf("Exit.\n");
+                break;
+            default:
+                printf("Invalid.\n");
+        }
+    } while(choice != 4);
+    return 0;
 }
