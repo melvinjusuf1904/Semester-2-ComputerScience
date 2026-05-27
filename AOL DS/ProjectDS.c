@@ -84,7 +84,7 @@ void menu() {
     printf("  ╠════════════════════════════════╣\n");
     printf("  ║  1. Add Word                   ║\n");
     printf("  ║  2. Delete Word                ║\n"
-    printf("  ║  3. Change Translate Words     ║\n");
+    printf("  ║  3. Change Translate Word      ║\n");
     printf("  ║  4. Search Word                ║\n");
     printf("  ║  5. Display All (Array)        ║\n");
     printf("  ║  6. Display Sorted (BST)       ║\n");
@@ -100,14 +100,15 @@ void menu() {
 int main() {
     int choice;
     Dictionary d;
-
+    loadFile();
     do {
         menu();
         scanf("%d", &choice);
-
+        printf("\n");
+        
         switch(choice) {
-
             case 1:
+                //add word
                 printf("Indonesia: ");
                 scanf("%s", d.indo);
 
@@ -122,22 +123,64 @@ int main() {
 
                 printf("Word added.\n");
                 break;
+
             case 2:
+                //delete word
+                deleteWord();
+                break;
                 for(int i = 0; i < count; i++) {
                     printf("%s -> %s\n",
                            dictArray[i].indo,
                            dictArray[i].eng);
                 }
                 break;
+
             case 3:
+                //change translate word
+                changeTranslateWord();
+                break;
+
+            case 4:
+                //search word
+                searchWord();
+                break;
+            
+            case 5:
+                //display all (array)
+                for(int i = 0; i < count; i++) {
+                    printf("%s -> %s\n",
+                           dictArray[i].indo,
+                           dictArray[i].eng);
+                }
+                break;
+            
+            case 6:
+                //display sorted BST
+                printf("=== Sorted Dictionary (BST) ===\n");
                 inorder(root);
                 break;
-            case 4:
+
+               case 7:
+                //undo
+                undo();
+                break;
+
+               case 8:
+                //show search history
+                searchHistory();
+                break;
+            
+            case 0:
+                //save and exit
+                saveFile();
                 printf("Exit.\n");
                 break;
+            
             default:
-                printf("Invalid.\n");
+                printf("Invalid choice.\n");
         }
-    } while(choice != 4);
+        printf("\n");
+        
+    } while(choice != 0);
     return 0;
 }
