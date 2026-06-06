@@ -44,6 +44,38 @@ void insertDCLL(Dictionary d) {
     }
 }
 
+void deleteDCLL(char word[]) {
+
+    if(head == NULL)
+        return;
+
+    Node* curr = head;
+
+    do {
+
+        if(strcmp(curr->data.indo, word) == 0) {
+
+            if(curr->next == curr) {
+                free(curr);
+                head = NULL;
+                return;
+            }
+
+            curr->prev->next = curr->next;
+            curr->next->prev = curr->prev;
+
+            if(curr == head)
+                head = curr->next;
+
+            free(curr);
+            return;
+        }
+
+        curr = curr->next;
+
+    } while(curr != head);
+}
+
 /* ================= BST ================= */
 
 typedef struct TreeNode {
@@ -54,18 +86,85 @@ typedef struct TreeNode {
 
 TreeNode* root = NULL;
 
-TreeNode* insertBST(TreeNode* node, Dictionary d) {
+TreeNode* minValueNode(TreeNode* node) {
+
+    TreeNode* curr = node;
+
+    while(curr && curr->left != NULL)
+        curr = curr->left;
+
+    return curr;
+}
+
+TreeNode* deleteBST(
+    TreeNode* root,
+    char word[]
+) {
+
+    if(root == NULL)
+        return root;
+
+    if(strcmp(word, root->data.indo) < 0)
+        root->left =
+            deleteBST(root->left, word);
+
+    else if(strcmp(word, root->data.indo) > 0)
+        root->right =
+            deleteBST(root->right, word);
+
+    else {
+
+        if(root->left == NULL) {
+            TreeNode* temp =
+                root->right;
+            free(root);
+            return temp;
+        }
+        else if(root->right == NULL) {
+            TreeNode* temp =
+                root->left;
+            free(root);
+            return temp;
+        }
+
+        TreeNode* temp =
+            minValueNode(root->right);
+        root->data = temp->data;
+        root->right =
+            deleteBST(
+                root->right,
+                temp->data.indo
+            );
+    }
+
+    return root;
+}
+
+TreeNode* insertBST(
+    TreeNode* node,
+    Dictionary d
+) {
+
     if(node == NULL) {
-        TreeNode* newNode = (TreeNode*)malloc(sizeof(TreeNode));
+
+        TreeNode* newNode =
+            (TreeNode*)malloc(sizeof(TreeNode));
+
         newNode->data = d;
-        newNode->left = newNode->right = NULL;
+        newNode->left = NULL;
+        newNode->right = NULL;
+
         return newNode;
     }
 
     if(strcmp(d.indo, node->data.indo) < 0)
-        node->left = insertBST(node->left, d);
+        node->left =
+            insertBST(node->left, d);
+
     else
-        node->right = insertBST(node->right, d);
+        node->right =
+            insertBST(node->right, d);
+
     return node;
 }
 
@@ -80,6 +179,10 @@ void inorder(TreeNode* node) {
 
 #define HASH_SIZE 101
 
+#define OP_ADD 1
+#define OP_DELETE 2
+#define OP_CHANGE 3
+
 typedef struct HashNode {
     Dictionary data;
     struct HashNode* next;
@@ -87,6 +190,26 @@ typedef struct HashNode {
 
 HashNode* hashTable[HASH_SIZE];
 
+/* ================= STACK ================= */
+
+typedef struct StackNode {
+    int operation; // 1=ADD, 2=DELETE, 3=CHANGE
+    Dictionary oldData;
+    Dictionary newData;
+    struct StackNode* next;
+} StackNode;
+
+StackNode* top = NULL;
+
+/* ================= QUEUE ================= */
+
+typedef struct QueueNode {
+    char word[100];
+    struct QueueNode* next;
+} QueueNode;
+
+QueueNode* front = NULL;
+QueueNode* rear = NULL;
 /* ================= HASH ================= */
 
 int hashFunc(char word[]) {
@@ -126,7 +249,73 @@ HashNode* searchHash(char word[]) {
 
     return NULL;
 }
+/* ================= STACK FUNCTIONS ================= */
 
+void pushStack(int operation,
+               Dictionary oldData,
+               Dictionary newData) {
+
+    StackNode* newNode =
+        (StackNode*)malloc(sizeof(StackNode));
+
+    newNode->operation = operation;
+    newNode->oldData = oldData;
+    newNode->newData = newData;
+    newNode->next = top;
+
+    top = newNode;
+}
+
+int popStack(int* operation,
+             Dictionary* oldData,
+             Dictionary* newData) {
+
+    if(top == NULL)
+        return 0;
+
+    StackNode* temp = top;
+
+    *operation = temp->operation;
+    *oldData = temp->oldData;
+    *newData = temp->newData;
+
+    top = top->next;
+
+    free(temp);
+
+    return 1;
+}
+
+/* ================= QUEUE FUNCTIONS ================= */
+
+void enqueueHistory(char word[]) {
+
+    QueueNode* newNode =
+        (QueueNode*)malloc(sizeof(QueueNode));
+
+    strcpy(newNode->word, word);
+    newNode->next = NULL;
+
+    if(rear == NULL) {
+        front = rear = newNode;
+    }
+    else {
+        rear->next = newNode;
+        rear = newNode;
+    }
+}
+
+void searchHistory() {
+
+    QueueNode* temp = front;
+
+    printf("=== Search History ===\n");
+
+    while(temp != NULL) {
+        printf("%s\n", temp->word);
+        temp = temp->next;
+    }
+}
 /* ================= TRIE ================= */
 
 typedef struct TrieNode {
@@ -173,6 +362,44 @@ void insertTrie(char word[]) {
     }
 
     curr->endWord = 1;
+}
+
+int deleteTrieHelper(
+    TrieNode* curr,
+    char word[],
+    int depth
+) {
+
+    if(curr == NULL)
+        return 0;
+
+    if(word[depth] == '\0') {
+
+        curr->endWord = 0;
+
+        return 1;
+    }
+
+    int index =
+        tolower(word[depth]) - 'a';
+
+    if(index < 0 || index > 25)
+        return 0;
+
+    return deleteTrieHelper(
+        curr->child[index],
+        word,
+        depth + 1
+    );
+}
+
+void deleteTrie(char word[]) {
+
+    deleteTrieHelper(
+        rootTrie,
+        word,
+        0
+    );
 }
 
 /* ================= HEAP ================= */
@@ -227,10 +454,16 @@ void prefixSearch() {
     TrieNode* curr = rootTrie;
 
     for(int i = 0; prefix[i] != '\0'; i++) {
-        int index =
-            tolower(prefix[i]) - 'a';
 
-        if(curr->child[index] == NULL) {
+    int index =
+        tolower(prefix[i]) - 'a';
+
+    if(index < 0 || index > 25){
+        printf("Invalid prefix.\n");
+        return;
+    }
+
+    if(curr->child[index] == NULL) {
             printf("No matching words.\n");
             return;
         }
@@ -258,53 +491,317 @@ void prefixSearch() {
 }
 
 /* ================= SEARCH WORD ================= */
-
 void searchWord() {
+
     char word[100];
 
     printf("Search Word: ");
     scanf("%s", word);
 
-    HashNode* result =
-        searchHash(word);
+    enqueueHistory(word);
 
-    if(result != NULL) {
-        printf("Found:\n");
+    /* Indonesia -> English (Hash Table) */
+    HashNode* result = searchHash(word);
 
-        printf("%s -> %s\n",
-               result->data.indo,
-               result->data.eng);
-
-    } else {
-        printf("Word not found.\n");
-        printf("Use menu 9 for prefix suggestions.\n");
+    if(result != NULL){
+        printf(
+            "%s -> %s\n",
+            result->data.indo,
+            result->data.eng
+        );
+        return;
     }
+
+    /* English -> Indonesia (Array) */
+    for(int i = 0; i < count; i++) {
+
+        if(strcmp(
+            dictArray[i].eng,
+            word
+        ) == 0){
+
+            printf(
+                "%s -> %s\n",
+                dictArray[i].eng,
+                dictArray[i].indo
+            );
+            return;
+        }
+    }
+
+    printf("Word not found.\n");
 }
 /* ================= MENU ================= */
 
-void loadFile() {
+void loadFile(){
 
+    FILE* fp =
+        fopen("dictionary.txt","r");
+
+    if(fp == NULL)
+        return;
+
+    Dictionary d;
+
+    while(
+        fscanf(
+            fp,
+            "%[^|]|%[^\n]\n",
+            d.indo,
+            d.eng
+        ) == 2
+    ){
+        if(count >= MAX){
+        printf("Dictionary Full.\n");
+        break;
+        }
+        
+        dictArray[count++] = d;
+        insertDCLL(d);
+        root =
+            insertBST(root,d);
+        insertHash(d);
+        insertTrie(d.indo);
+        
+    }
+    fclose(fp);
 }
 
-void saveFile() {
-
+void saveFile(){
+    FILE* fp =
+        fopen("dictionary.txt","w");
+    if(fp == NULL){
+        printf("Cannot save file.\n");
+        return;
+    }
+    for(int i = 0; i < count; i++){
+        fprintf(
+            fp,
+            "%s|%s\n",
+            dictArray[i].indo,
+            dictArray[i].eng
+        );
+    }
+    fclose(fp);
 }
 
-void deleteWord() {
-    printf("Delete feature not ready yet.\n");
+void deleteHash(char word[]){
+    int index = hashFunc(word);
+
+    HashNode* curr = hashTable[index];
+    HashNode* prev = NULL;
+
+    while(curr != NULL){
+        if(strcmp(curr->data.indo, word) == 0){
+            if(prev == NULL)
+                hashTable[index] = curr->next;
+            else
+                prev->next = curr->next;
+            free(curr);
+            return;
+        }
+        prev = curr;
+        curr = curr->next;
+    }
 }
 
-void changeTranslateWord() {
-    printf("Change feature not ready yet.\n");
+void deleteWord(){
+
+    char word[100];
+
+    printf("Delete Word: ");
+    scanf("%s", word);
+    for(int i = 0; i < count; i++){
+        if(strcmp(dictArray[i].indo, word) == 0){
+            Dictionary deletedData =
+                dictArray[i];
+            Dictionary empty = {"",""};
+            pushStack(
+                OP_DELETE,
+                deletedData,
+                empty
+            );
+
+            for(int j = i; j < count - 1; j++){
+                dictArray[j] = dictArray[j+1];
+            }
+            count--;
+            deleteHash(word);
+            deleteDCLL(word);
+            root =
+            deleteBST(
+                root,
+                word
+            );
+
+deleteTrie(word);
+            printf("Word deleted.\n");
+            return;
+        }
+    }
+
+    printf("Word not found.\n");
 }
 
-void undo() {
-    printf("Undo feature not ready yet.\n");
+void updateHash(char word[],
+                char newTranslation[])
+{
+    HashNode* node =
+        searchHash(word);
+
+    if(node != NULL){
+        strcpy(
+            node->data.eng,
+            newTranslation
+        );
+    }
 }
 
-void searchHistory() {
-    printf("History feature not ready yet.\n");
+void changeTranslateWord(){
+
+    char word[100];
+
+    printf("Word: ");
+    scanf("%s", word);
+
+    for(int i = 0; i < count; i++){
+
+        if(strcmp(dictArray[i].indo, word) == 0){
+
+            Dictionary oldData =
+                dictArray[i];
+
+            printf("New Translation: ");
+            scanf("%s", dictArray[i].eng);
+
+            updateHash(
+                word,
+                dictArray[i].eng
+            );     
+
+            deleteDCLL(word);
+            insertDCLL(dictArray[i]);
+
+            root = deleteBST(root, word);
+            root = insertBST(root, dictArray[i]);
+            
+            Dictionary newData =
+                dictArray[i];
+
+            pushStack(
+                OP_CHANGE,
+                oldData,
+                newData
+            );
+            printf("Translation updated.\n");
+            return;
+        }
+    }
+    printf("Word not found.\n");
 }
+
+void undo(){
+
+    int operation;
+
+    Dictionary oldData;
+    Dictionary newData;
+
+    if(!popStack(
+        &operation,
+        &oldData,
+        &newData))
+    {
+        printf("Nothing to undo.\n");
+        return;
+    }
+
+    if(operation == OP_DELETE){
+
+    if(count >= MAX){
+        printf("Dictionary Full. Cannot undo.\n");
+        return;
+    }
+        
+    dictArray[count++] = oldData;
+    insertDCLL(oldData);
+    root =
+        insertBST(
+            root,
+            oldData
+        );
+    insertHash(oldData);
+    insertTrie(
+        oldData.indo
+    );
+    printf("Delete undone.\n");
+}
+
+    else if(operation == OP_CHANGE){
+
+        for(int i = 0; i < count; i++){
+            if(strcmp(
+                dictArray[i].indo,
+                oldData.indo) == 0){
+                dictArray[i] = oldData;
+                break;
+            }
+        }
+        updateHash(
+            oldData.indo,
+            oldData.eng
+        );
+
+        deleteDCLL(newData.indo);
+        insertDCLL(oldData);
+
+        root = deleteBST(
+            root,
+            newData.indo
+        );
+
+root = insertBST(
+    root,
+    oldData
+);
+        
+        printf("Change undone.\n");
+    }
+    else if(operation == OP_ADD){
+
+    for(int i = 0; i < count; i++){
+
+        if(strcmp(
+            dictArray[i].indo,
+            newData.indo) == 0){
+
+            for(int j = i;
+                j < count - 1;
+                j++){
+                dictArray[j] =
+                    dictArray[j+1];
+            }
+            count--;
+            break;
+        }
+    }
+
+    deleteHash(newData.indo);
+    deleteDCLL(newData.indo);
+    root =
+    deleteBST(
+        root,
+        newData.indo
+    );
+
+    deleteTrie(
+        newData.indo
+    );    
+        
+    printf("Add undone.\n");
+        }
+    }
+
 void menu() {
     printf("  ╔════════════════════════════════╗\n");
     printf("\n === FINAL DICTIONARY SYSTEM ===\n");
@@ -349,6 +846,16 @@ int main() {
                 printf("English: ");
                 scanf("%s", d.eng);
 
+                if(searchHash(d.indo) != NULL){
+                    printf("Word already exists.\n");
+                    break;
+                }
+
+                if(count >= MAX){
+                    printf("Dictionary Full.\n");
+                    break;
+                }
+                
                 dictArray[count++] = d;
 
                 insertDCLL(d);
@@ -356,6 +863,14 @@ int main() {
                 root = insertBST(root, d);
                 insertHash(d);
                 insertTrie(d.indo);
+
+                Dictionary empty = {"",""};
+
+                pushStack(
+                OP_ADD,
+                empty,
+                d
+                );
                 
                 printf("Word added.\n");
                 break;
