@@ -4,6 +4,7 @@
 #include <ctype.h>
 
 #define MAX 300
+#define FILENAME "dictionary.txt"
 
 typedef struct {
     char indo[100];
@@ -536,7 +537,7 @@ void searchWord() {
 void loadFile(){
 
     FILE* fp =
-        fopen("dictionary.txt","r");
+        fopen(FILENAME,"r");
 
     if(fp == NULL)
         return;
@@ -569,7 +570,7 @@ void loadFile(){
 
 void saveFile(){
     FILE* fp =
-        fopen("dictionary.txt","w");
+        fopen(FILENAME,"w");
     if(fp == NULL){
         printf("Cannot save file.\n");
         return;
