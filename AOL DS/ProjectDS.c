@@ -5,7 +5,7 @@
 #include <strings.h>
 
 #define MAX 300
-#define FILENAME "dictionary.txt"
+#define FILENAME "/Users/melvinjusuf/Documents/AOL DS/dictionary.txt"
 typedef struct {
     char indo[100];
     char eng[100];
@@ -840,6 +840,7 @@ int main() {
         
         switch(choice) {
             case 1:
+                system("clear");
                 //add word
                 printf("Indonesia: ");
                 scanf("%s", d.indo);
@@ -877,21 +878,25 @@ int main() {
                 break;
 
             case 2:
+                system("clear");
                 //delete word
                 deleteWord();
                 break;
 
             case 3:
+                system("clear");
                 //change translate word
                 changeTranslateWord();
                 break;
 
             case 4:
+                system("clear");
                 //search word
                 searchWord();
                 break;
             
             case 5:
+                system("clear");
                 //display all (array)
                 for(int i = 0; i < count; i++) {
                     printf("%s -> %s\n",
@@ -901,26 +906,31 @@ int main() {
                 break;
             
             case 6:
+                system("clear");
                 //display sorted BST
                 printf("=== Sorted Dictionary (BST) ===\n");
                 inorder(root);
                 break;
 
                case 7:
+                system("clear");
                 //undo
                 undo();
                 break;
 
                case 8:
+                system("clear");
                 //show search history
                 searchHistory();
                 break;
 
                 case 9:
+                system("clear");
                 prefixSearch();
                 break;
             
             case 0:
+                system("clear");
                 //save and exit
                 saveFile();
                 printf("Exit.\n");
