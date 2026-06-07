@@ -5,7 +5,7 @@
 #include <strings.h>
 
 #define MAX 300
-#define FILENAME "/Users/melvinjusuf/Documents/AOL DS/dictionary.txt"
+#define FILENAME "dictionary.txt"
 typedef struct {
     char indo[100];
     char eng[100];
