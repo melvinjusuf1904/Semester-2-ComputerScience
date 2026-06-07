@@ -2,10 +2,10 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <strings.h>
 
 #define MAX 300
-#define FILENAME "dictionary.txt"
-
+#define FILENAME "/Users/melvinjusuf/Documents/AOL DS/dictionary.txt"
 typedef struct {
     char indo[100];
     char eng[100];
@@ -217,7 +217,7 @@ int hashFunc(char word[]) {
     int sum = 0;
 
     for(int i = 0; word[i] != '\0'; i++) {
-        sum += word[i];
+        sum += tolower((unsigned char)word[i]);
     }
 
     return sum % HASH_SIZE;
@@ -241,7 +241,7 @@ HashNode* searchHash(char word[]) {
     HashNode* temp = hashTable[index];
 
     while(temp != NULL) {
-        if(strcmp(temp->data.indo, word) == 0) {
+        if(strcasecmp(temp->data.indo, word) == 0) {
             return temp;
         }
 
@@ -516,7 +516,7 @@ void searchWord() {
     /* English -> Indonesia (Array) */
     for(int i = 0; i < count; i++) {
 
-        if(strcmp(
+        if(strcasecmp(
             dictArray[i].eng,
             word
         ) == 0){

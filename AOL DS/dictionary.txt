@@ -298,5 +298,3 @@ Filosofis|Philosophical
 Justifikasi|Justification
 Kebijakan|Policy
 Lugas|Straightforward
-Bangkrut|Bankrupt
-Erat|Intimate
