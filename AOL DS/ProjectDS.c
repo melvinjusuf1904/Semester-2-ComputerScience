@@ -66,7 +66,7 @@ void deleteDCLL(char word[]) {
 
     do {
 
-        if(strcmp(curr->data.indo, word) == 0) {
+        if(strcasecmp(curr->data.indo, word) == 0) {
 
             if(curr->next == curr) {
                 free(curr);
@@ -117,11 +117,11 @@ TreeNode* deleteBST(
     if(root == NULL)
         return root;
 
-    if(strcmp(word, root->data.indo) < 0)
+    if(strcasecmp(word, root->data.indo) < 0)
         root->left =
             deleteBST(root->left, word);
 
-    else if(strcmp(word, root->data.indo) > 0)
+    else if(strcasecmp(word, root->data.indo) > 0)
         root->right =
             deleteBST(root->right, word);
 
@@ -170,7 +170,7 @@ TreeNode* insertBST(
         return newNode;
     }
 
-    if(strcmp(d.indo, node->data.indo) < 0)
+    if(strcasecmp(d.indo, node->data.indo) < 0)
         node->left =
             insertBST(node->left, d);
 
@@ -404,7 +404,10 @@ void enqueueHistory(char word[]) {
 }
 
 void searchHistory() {
-
+    if(front == NULL){
+        printf("No search history.\n");
+        return;
+    }
     QueueNode* temp = front;
 
     printf("=== Search History ===\n");
@@ -503,13 +506,13 @@ void deleteTrie(char word[]) {
 
 /* ================= HEAP ================= */
 
-char heap[10][100];
+char heap[50][100];
 int heapSize = 0;
 
 /* Insert Suggestion */
 
 void insertHeap(char word[]) {
-    if(heapSize >= 10)
+    if(heapSize >= 50)
         return;
 
     strcpy(heap[heapSize], word);
@@ -548,7 +551,11 @@ void prefixSearch() {
     char prefix[100];
 
     printf("Input Prefix: ");
-    scanf("%s", prefix);
+    scanf("%99s", prefix);
+
+    for(int i = 0; prefix[i]; i++){
+        prefix[i] = tolower((unsigned char)prefix[i]);
+    }
 
     TrieNode* curr = rootTrie;
 
@@ -604,7 +611,7 @@ void searchWord() {
     char word[100];
 
     printf("Search Word: ");
-    scanf("%s", word);
+    scanf("%99s", word);
 
     enqueueHistory(word);
 
@@ -701,7 +708,7 @@ void deleteHash(char word[]){
     HashNode* prev = NULL;
 
     while(curr != NULL){
-        if(strcmp(curr->data.indo, word) == 0){
+        if(strcasecmp(curr->data.indo, word) == 0){
             if(prev == NULL)
                 hashTable[index] = curr->next;
             else
@@ -714,14 +721,23 @@ void deleteHash(char word[]){
     }
 }
 
+int wordExists(char word[]){
+    for(int i = 0; i < count; i++){
+        if(strcasecmp(dictArray[i].indo, word) == 0){
+            return 1;
+        }
+    }
+    return 0;
+}
+
 void deleteWord(){
 
     char word[100];
 
     printf("Delete Word: ");
-    scanf("%s", word);
+    scanf("%99s", word);
     for(int i = 0; i < count; i++){
-        if(strcmp(dictArray[i].indo, word) == 0){
+        if(strcasecmp(dictArray[i].indo, word) == 0){
             Dictionary deletedData =
                 dictArray[i];
             Dictionary empty = {"",""};
@@ -771,17 +787,17 @@ void changeTranslateWord(){
     char word[100];
 
     printf("Word: ");
-    scanf("%s", word);
+    scanf("%99s", word);
 
     for(int i = 0; i < count; i++){
 
-        if(strcmp(dictArray[i].indo, word) == 0){
+        if(strcasecmp(dictArray[i].indo, word) == 0){
 
             Dictionary oldData =
                 dictArray[i];
 
             printf("New Translation: ");
-            scanf("%s", dictArray[i].eng);
+            scanf("%99s", dictArray[i].eng);
 
             updateHash(
                 word,
@@ -849,7 +865,7 @@ void undo(){
     else if(operation == OP_CHANGE){
 
         for(int i = 0; i < count; i++){
-            if(strcmp(
+            if(strcasecmp(
                 dictArray[i].indo,
                 oldData.indo) == 0){
                 dictArray[i] = oldData;
@@ -880,7 +896,7 @@ root = insertBST(
 
     for(int i = 0; i < count; i++){
 
-        if(strcmp(
+        if(strcasecmp(
             dictArray[i].indo,
             newData.indo) == 0){
 
@@ -947,64 +963,58 @@ int main() {
         printf("\n");
         
         switch(choice) {
-            case 1:
-                CLEAR_SCREEN();
-                //add word
+           case 1: {
                 printf("Indonesia: ");
-                scanf("%s", d.indo);
-
+                scanf("%99s", d.indo);
+            
                 printf("English: ");
-                scanf("%s", d.eng);
+                scanf("%99s", d.eng);
 
-                if(searchHash(d.indo) != NULL){
+                if(wordExists(d.indo)){
                     printf("Word already exists.\n");
                     break;
                 }
-
+            
                 if(count >= MAX){
                     printf("Dictionary Full.\n");
                     break;
                 }
-                
+            
                 dictArray[count++] = d;
-
+            
                 insertDCLL(d);
-
                 root = insertBST(root, d);
                 insertHash(d);
                 insertTrie(d.indo);
-
+            
                 Dictionary empty = {"",""};
-
-                pushStack(
-                OP_ADD,
-                empty,
-                d
-                );
-                
+            
+                pushStack(OP_ADD, empty, d);
+            
                 printf("Word added.\n");
                 break;
+            }
 
             case 2:
-                CLEAR_SCREEN();
+                // // CLEAR_SCREEN();
                 //delete word
                 deleteWord();
                 break;
 
             case 3:
-                CLEAR_SCREEN();
+                // // CLEAR_SCREEN();
                 //change translate word
                 changeTranslateWord();
                 break;
 
             case 4:
-                CLEAR_SCREEN();
+                // // CLEAR_SCREEN();
                 //search word
                 searchWord();
                 break;
             
             case 5:
-                CLEAR_SCREEN();
+                // // CLEAR_SCREEN();
                 //display all (array)
                 printf("\n");
                 printTableHeader("DICTIONARY - ALL WORDS (ARRAY)");
@@ -1017,7 +1027,7 @@ int main() {
                 break;
             
             case 6:
-                CLEAR_SCREEN();
+                // // CLEAR_SCREEN();
                 //display sorted BST
                 {
                     int bstCounter = 0;
@@ -1029,24 +1039,24 @@ int main() {
                 break;
 
                case 7:
-                CLEAR_SCREEN();
+                // // CLEAR_SCREEN();
                 //undo
                 undo();
                 break;
 
                case 8:
-                CLEAR_SCREEN();
+                // // CLEAR_SCREEN();
                 //show search history
                 searchHistory();
                 break;
 
                 case 9:
-                CLEAR_SCREEN();
+                // // CLEAR_SCREEN();
                 prefixSearch();
                 break;
             
             case 0:
-                CLEAR_SCREEN();
+                // // CLEAR_SCREEN();
                 //save and exit
                 saveFile();
                 printf("Thank you for using the Dictionary System.\n");
