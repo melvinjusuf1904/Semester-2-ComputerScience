@@ -959,11 +959,21 @@ int main() {
     loadFile();
     do {
         menu();
-        scanf("%d", &choice);
+        if(scanf("%d", &choice) != 1){
+            printf("Failed to read menu input.\n");
+
+            int ch;
+            while((ch = getchar()) != '\n' && ch != EOF);
+
+            continue;
+        }
+
+        printf("DEBUG choice = %d\n", choice);
         printf("\n");
         
         switch(choice) {
-           case 1: {
+           case 1: 
+               {
                 printf("Indonesia: ");
                 scanf("%99s", d.indo);
             
